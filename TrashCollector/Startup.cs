@@ -37,10 +37,10 @@ namespace TrashCollector
                 //Here we create a Admin super user who will maintain the website                   
 
                 var user = new ApplicationUser();
-                user.UserName = "shanu";
-                user.Email = "syedshanumcain@gmail.com";
+                user.UserName = "Admin";
+                user.Email = "keec86@gmail.com";
 
-                string userPWD = "A@Z200711";
+                string userPWD = "Kc240160.";
 
                 var chkUser = UserManager.Create(user, userPWD);
 
@@ -53,10 +53,10 @@ namespace TrashCollector
             }
 
             // creating Creating Manager role     
-            if (!roleManager.RoleExists("Manager"))
+            if (!roleManager.RoleExists("Customer"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                role.Name = "Manager";
+                role.Name = "Customer";
                 roleManager.Create(role);
 
             }

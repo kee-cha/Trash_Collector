@@ -185,6 +185,14 @@
     <Compile Include="Migrations\202001071919494_addNewPropertyToCustomer.Designer.cs">
       <DependentUpon>202001071919494_addNewPropertyToCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001072004113_addMigrationWithChangeInCustomerClass.cs" />
+    <Compile Include="Migrations\202001072004113_addMigrationWithChangeInCustomerClass.Designer.cs">
+      <DependentUpon>202001072004113_addMigrationWithChangeInCustomerClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001072128175_addDisplayNameToMigration.cs" />
+    <Compile Include="Migrations\202001072128175_addDisplayNameToMigration.Designer.cs">
+      <DependentUpon>202001072128175_addDisplayNameToMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -285,6 +293,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001071919494_addNewPropertyToCustomer.resx">
       <DependentUpon>202001071919494_addNewPropertyToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001072004113_addMigrationWithChangeInCustomerClass.resx">
+      <DependentUpon>202001072004113_addMigrationWithChangeInCustomerClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001072128175_addDisplayNameToMigration.resx">
+      <DependentUpon>202001072128175_addDisplayNameToMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
