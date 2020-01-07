@@ -3,37 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
     public class CustomersController : Controller
     {
+        ApplicationDbContext context;
+        public CustomersController()
+        {
+            context = new ApplicationDbContext();
+        }
         // GET: Customers
         public ActionResult Index()
         {
-            return View();
+            var customers = context.Customers.ToList();
+            return View(customers);
         }
 
         // GET: Customers/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Customer customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            return View(customer);
         }
 
         // GET: Customers/Create
         public ActionResult Create()
         {
-            return View();
+            Customer customer = new Customer();
+            return View(customer);
         }
 
         // POST: Customers/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Customer customer)
         {
             try
             {
                 // TODO: Add insert logic here
-
+                context.Customers.Add(customer);
                 return RedirectToAction("Index");
             }
             catch
@@ -45,6 +54,7 @@ namespace TrashCollector.Controllers
         // GET: Customers/Edit/5
         public ActionResult Edit(int id)
         {
+            Customer customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
             return View();
         }
 
