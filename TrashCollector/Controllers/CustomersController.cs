@@ -43,6 +43,7 @@ namespace TrashCollector.Controllers
             {
                 // TODO: Add insert logic here
                 context.Customers.Add(customer);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
@@ -60,12 +61,25 @@ namespace TrashCollector.Controllers
 
         // POST: Customers/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Customer customer)
         {
             try
             {
                 // TODO: Add update logic here
-
+                var updateCustomer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+                updateCustomer.FirstName = customer.FirstName;
+                updateCustomer.LastName = customer.LastName;
+                updateCustomer.PickupConfirmation = customer.PickupConfirmation;
+                updateCustomer.PickupDay = customer.PickupDay;
+                updateCustomer.ExtraPickupDate = customer.ExtraPickupDate;
+                updateCustomer.Balance = customer.Balance;
+                updateCustomer.SuspendStart = customer.SuspendStart;
+                updateCustomer.SuspendEnd = customer.SuspendEnd;
+                updateCustomer.City = customer.City;
+                updateCustomer.State = customer.State;
+                updateCustomer.StreetAddress = customer.StreetAddress;
+                updateCustomer.ZipCode = customer.ZipCode;
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
@@ -77,17 +91,20 @@ namespace TrashCollector.Controllers
         // GET: Customers/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Customer customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            return View(customer);
         }
 
         // POST: Customers/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Customer customer)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+                context.Customers.Remove(customer);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
