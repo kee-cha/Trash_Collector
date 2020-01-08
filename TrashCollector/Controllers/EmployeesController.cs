@@ -27,7 +27,7 @@ namespace TrashCollector.Controllers
         // GET: Employees/Details/5
         public ActionResult Details(int id)
         {
-            Employee employee = context.Employees.Where(em => em.Id == id).SingleOrDefault();
+            var employee = context.Employees.Where(em => em.Id == id).SingleOrDefault();
             return View(employee);
         }
 
@@ -60,7 +60,7 @@ namespace TrashCollector.Controllers
         // GET: Employees/Edit/5
         public ActionResult Edit(int id)
         {
-            Employee employee = context.Employees.SingleOrDefault(e => e.Id == id);
+            var employee = context.Employees.SingleOrDefault(e => e.Id == id);
             return View(employee);
         }
 
@@ -86,17 +86,22 @@ namespace TrashCollector.Controllers
         // GET: Employees/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var employee = context.Employees.Where(e => e.Id == id).SingleOrDefault();
+            return View(employee);
         }
 
         // POST: Employees/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Employee employee)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                employee = context.Employees.Where(e => e.Id == id).SingleOrDefault();
+                var removeEmpUser = context.Users.Where(e => e.Id == employee.ApplicationId).SingleOrDefault();
+                context.Users.Remove(removeEmpUser);
+                context.Employees.Remove(employee);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch

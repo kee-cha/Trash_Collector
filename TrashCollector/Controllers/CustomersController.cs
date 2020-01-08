@@ -18,22 +18,24 @@ namespace TrashCollector.Controllers
         }
         // GET: Customers
 
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            var customers = context.Customers.Include(c=>c.ApplicationUser).ToList();
+            var customers = context.Customers.Include(c=>c.ApplicationUser).Where(c=>c.Id==id).ToList();
             return View(customers);
         }
         // GET: Customers
 
         public ActionResult CustomerIndex()
         {
+
             var customers = context.Customers.Include(c=>c.ApplicationUser).ToList();
             return View(customers);
         }
         // GET: Customers/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details()
         {
-            Customer customer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
+            var id = User.Identity.GetUserId();
+            var customer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.ApplicationId == id).SingleOrDefault();
             return View(customer);
         }
 
@@ -54,7 +56,7 @@ namespace TrashCollector.Controllers
                 customer.ApplicationId = User.Identity.GetUserId();
                 context.Customers.Add(customer);
                 context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details");
             }
             catch
             {
@@ -65,7 +67,7 @@ namespace TrashCollector.Controllers
         // GET: Customers/Edit/5
         public ActionResult Edit(int id)
         {
-            Customer customer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
+            var customer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
             return View();
         }
 
@@ -96,8 +98,8 @@ namespace TrashCollector.Controllers
         // GET: Customers/Edit/5
         public ActionResult CreatePickup(int id)
         {
-            Customer customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
-            return View();
+            var customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            return View(customer);
         }
 
         // POST: Customers/Edit/5
@@ -107,7 +109,7 @@ namespace TrashCollector.Controllers
             try
             {
                 // TODO: Add update logic here
-                var updateCustomer = context.Customers.Where(c => c.Id == id).SingleOrDefault();               
+                var updateCustomer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
                 updateCustomer.PickupConfirmation = customer.PickupConfirmation;
                 updateCustomer.PickupDay = customer.PickupDay;
                 updateCustomer.ExtraPickupDate = customer.ExtraPickupDate;
@@ -115,7 +117,7 @@ namespace TrashCollector.Controllers
                 updateCustomer.SuspendStart = customer.SuspendStart;
                 updateCustomer.SuspendEnd = customer.SuspendEnd;            
                 context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details");
             }
             catch
             {
@@ -126,7 +128,7 @@ namespace TrashCollector.Controllers
         // GET: Customers/Delete/5
         public ActionResult Delete(int id)
         {
-            Customer customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            var customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
             return View(customer);
         }
 
