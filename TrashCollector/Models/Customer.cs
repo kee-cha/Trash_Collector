@@ -16,25 +16,26 @@ namespace TrashCollector.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Display(Name = "Pickup Day")]
-        public DayOfWeek PickupDay { get; set; }
+        public string PickupDay { get; set; }
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
         [Display(Name = "City")]
         public string City { get; set; }
         [Display(Name = "State")]
         public string  State { get; set; }
-        [Display(Name = "First Name")]
+        [Display(Name = "Zip-code")]
         public string ZipCode { get; set; }
+        
         [Display(Name = "Balance Due")]
         public double Balance { get; set; }
         [Display(Name = "Confirm Pickup")]
         public bool PickupConfirmation { get; set; }
         [Display(Name = "Suspend Pickup Start Date")]
-        public DateTime SuspendStart { get; set; }
+        public string SuspendStart { get; set; }
         [Display(Name = "Suspend Pickup End Date")]
-        public DateTime SuspendEnd { get; set; }
-        [Display(Name = "First Name")]
-        public DateTime ExtraPickupDate { get; set; }
+        public string SuspendEnd { get; set; }
+        [Display(Name = "Extra Pickup Dates")]
+        public string ExtraPickupDate { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public string ApplicationId { get; set; }

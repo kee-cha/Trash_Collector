@@ -17,7 +17,8 @@ namespace TrashCollector.Controllers
         }
         // GET: Employees
         public ActionResult Index()
-        {
+        {   
+
             var employees = context.Employees.ToList();
             return View(employees);
         }

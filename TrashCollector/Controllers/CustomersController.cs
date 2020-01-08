@@ -114,5 +114,6 @@ namespace TrashCollector.Controllers
                 return View();
             }
         }
+
     }
 }
