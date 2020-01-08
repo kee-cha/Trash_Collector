@@ -25,15 +25,20 @@
         <dd>
             @Html.DisplayFor(model => model.LastName)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.PickupDay)
+            @Html.DisplayNameFor(model => model.ApplicationUser.Email)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PickupDay)
+            @Html.DisplayFor(model => model.ApplicationUser.Email)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser.UserName)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.UserName)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ZipCode)
         </dt>
@@ -50,49 +55,11 @@
             @Html.DisplayFor(model => model.Balance)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PickupConfirmation)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PickupConfirmation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SuspendStart)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SuspendStart)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SuspendEnd)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SuspendEnd)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ExtraPickupDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ExtraPickupDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ApplicationId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ApplicationId)
-        </dd>
-
     </dl>
 </div>
 <p>
+
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Create/Edit Pickup", "CreatePickup", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

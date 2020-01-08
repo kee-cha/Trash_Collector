@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<TrashCollector.Models.Customer>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CustomerIndex";
 }
 
-<h2>Index</h2>
+<h2>CustomerIndex</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -21,13 +21,22 @@
             @Html.DisplayNameFor(model => model.ApplicationUser.Email)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.StreetAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ZipCode)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PickupDay)
+            @Html.DisplayNameFor(model => model.Balance)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Balance)
+            @Html.DisplayNameFor(model => model.PickupDay)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PickupConfirmation)
@@ -56,13 +65,22 @@
         @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
     </td>
     <td>
+        @Html.DisplayFor(modelItem => item.StreetAddress)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.City)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.State)
+    </td>
+    <td>
         @Html.DisplayFor(modelItem => item.ZipCode)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.PickupDay)
+        @Html.DisplayFor(modelItem => item.Balance)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.Balance)
+        @Html.DisplayFor(modelItem => item.PickupDay)
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.PickupConfirmation)
@@ -77,7 +95,7 @@
         @Html.DisplayFor(modelItem => item.ExtraPickupDate)
     </td>
     <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Edit Pickup", "CreatePickup", new { id = item.Id }) |
         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
         @Html.ActionLink("Delete", "Delete", new { id = item.Id })
     </td>

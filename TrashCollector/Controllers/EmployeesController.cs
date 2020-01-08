@@ -15,6 +15,7 @@ namespace TrashCollector.Controllers
         {
             context = new ApplicationDbContext();
         }
+
         // GET: Employees
         public ActionResult Index()
         {   

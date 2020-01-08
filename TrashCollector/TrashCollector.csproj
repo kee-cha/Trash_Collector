@@ -197,6 +197,14 @@
     <Compile Include="Migrations\202001080502132_changeCustomerProperty.Designer.cs">
       <DependentUpon>202001080502132_changeCustomerProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001081356393_changePickupDayType.cs" />
+    <Compile Include="Migrations\202001081356393_changePickupDayType.Designer.cs">
+      <DependentUpon>202001081356393_changePickupDayType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001081546465_newChange.cs" />
+    <Compile Include="Migrations\202001081546465_newChange.Designer.cs">
+      <DependentUpon>202001081546465_newChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -275,6 +283,8 @@
     <Content Include="Views\Roles\AddRole.cshtml" />
     <Content Include="Views\Register.cshtml" />
     <Content Include="Views\Customers\Edit.cshtml" />
+    <Content Include="Views\Customers\CreatePickup.cshtml" />
+    <Content Include="Views\Customers\CustomerIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -307,6 +317,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001080502132_changeCustomerProperty.resx">
       <DependentUpon>202001080502132_changeCustomerProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001081356393_changePickupDayType.resx">
+      <DependentUpon>202001081356393_changePickupDayType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001081546465_newChange.resx">
+      <DependentUpon>202001081546465_newChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

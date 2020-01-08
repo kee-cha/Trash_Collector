@@ -26,11 +26,11 @@
                         
                         @if (User.IsInRole("Employee")==true)
                         {
-                            @Html.ActionLink("Home", "Index", "Customers")
+                            @Html.ActionLink("Customers", "CustomerIndex", "Customers")
                         }
-                        else if (User.IsInRole("Customer")==true)
+                        else if (User.IsInRole("Employee")!=true)
                         {
-                            @Html.ActionLink("Home", "Index", "Employees")
+                            @Html.ActionLink("Home", "Index", "Customers")
                         }
                         else
                         {
