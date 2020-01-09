@@ -27,8 +27,12 @@ namespace TrashCollector.Controllers
 
         public ActionResult CustomerIndex()
         {
-
-            var customers = context.Customers.Include(c=>c.ApplicationUser).ToList();
+            DateTime today = DateTime.Now;
+            string currentDay = today.DayOfWeek.ToString();
+            var id = User.Identity.GetUserId();
+            var currentEmployee = context.Employees.Where(e => e.ApplicationId == id).SingleOrDefault();
+            var customers = context.Customers.Include(c=>c.ApplicationUser).Where(c=>c.ZipCode == currentEmployee.ZipCode && c.PickupDay == currentDay).ToList();
+            
             return View(customers);
         }
         // GET: Customers/Details/5
@@ -124,6 +128,7 @@ namespace TrashCollector.Controllers
                 return View();
             }
         }
+        
 
         // GET: Customers/Delete/5
         public ActionResult Delete(int id)
