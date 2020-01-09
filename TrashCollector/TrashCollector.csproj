@@ -205,12 +205,21 @@
     <Compile Include="Migrations\202001081546465_newChange.Designer.cs">
       <DependentUpon>202001081546465_newChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001091602439_putRequiredFieldIn.cs" />
+    <Compile Include="Migrations\202001091602439_putRequiredFieldIn.Designer.cs">
+      <DependentUpon>202001091602439_putRequiredFieldIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001091609363_newMigratiion.cs" />
+    <Compile Include="Migrations\202001091609363_newMigratiion.Designer.cs">
+      <DependentUpon>202001091609363_newMigratiion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\EmployeeHomeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -323,6 +332,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001081546465_newChange.resx">
       <DependentUpon>202001081546465_newChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001091602439_putRequiredFieldIn.resx">
+      <DependentUpon>202001091602439_putRequiredFieldIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001091609363_newMigratiion.resx">
+      <DependentUpon>202001091609363_newMigratiion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

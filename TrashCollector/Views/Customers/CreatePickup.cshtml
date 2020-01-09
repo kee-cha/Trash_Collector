@@ -20,7 +20,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PickupDay, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PickupDay, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(m=>m.PickupDay, new List<SelectListItem>
+           {new SelectListItem { Text="Sunday", Value="Sunday",Selected =true },
+               new SelectListItem { Text = "Monday", Value="Monday"},
+               new SelectListItem { Text = "Tuesday", Value="Tuesday" },
+               new SelectListItem { Text = "Wednesday", Value="Wednesday" },
+               new SelectListItem { Text = "Thursday", Value="Thursday" },
+               new SelectListItem { Text = "Friday", Value="Friday" },
+               new SelectListItem { Text = "Saturday", Value="Saturday" }})
                 @Html.ValidationMessageFor(model => model.PickupDay, "", new { @class = "text-danger" })
             </div>
         </div>

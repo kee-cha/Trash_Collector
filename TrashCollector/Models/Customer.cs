@@ -24,8 +24,7 @@ namespace TrashCollector.Models
         [Display(Name = "State")]
         public string  State { get; set; }
         [Display(Name = "Zip-code")]
-        public string ZipCode { get; set; }
-        
+        public string ZipCode { get; set; }        
         [Display(Name = "Balance Due")]
         public double Balance { get; set; }
         [Display(Name = "Confirm Pickup")]

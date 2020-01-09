@@ -25,24 +25,7 @@ namespace TrashCollector.Controllers
         }
         // GET: Customers
 
-        public ActionResult CustomerIndex()
-        {
 
-            var id = User.Identity.GetUserId();
-            var currentEmployee = context.Employees.Where(e => e.ApplicationId == id).SingleOrDefault();
-            var customers = context.Customers.Include(c => c.ApplicationUser).Where(c => c.ZipCode == currentEmployee.ZipCode).ToList();
-
-            return View(customers);
-        }
-        public ActionResult GetCustomerByDay()
-        {
-            DateTime today = DateTime.Now;
-            string currentDay = today.DayOfWeek.ToString();
-            var id = User.Identity.GetUserId();
-            var currentEmployee = context.Employees.Where(e => e.ApplicationId == id).SingleOrDefault();
-            var customer = context.Customers.Include(c => c.ApplicationUser).Where(c => c.PickupDay == currentDay && c.ZipCode == currentEmployee.ZipCode).ToList();
-            return View("CustomerIndex", customer);
-        }
         // GET: Customers/Details/5
         public ActionResult Details(int? ID)
         {
@@ -108,7 +91,7 @@ namespace TrashCollector.Controllers
                 updateCustomer.StreetAddress = customer.StreetAddress;
                 updateCustomer.ZipCode = customer.ZipCode;
                 context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details",updateCustomer);
             }
             catch
             {
@@ -149,22 +132,7 @@ namespace TrashCollector.Controllers
                 return View();
             }
         }
-        public ActionResult ChargeBalance()
-        {
-            var people = context.Customers.Select(c => c).ToList();
-            string dateTime = DateTime.Today.DayOfWeek.ToString();
-            int time = DateTime.Now.Hour;
-            foreach (var item in people)
-            {                
-                if (item.PickupConfirmation == true && item.PickupDay == dateTime && time >= 0)
-                {
-                    item.Balance += 35;
-                    item.PickupConfirmation = false;
-                }
-            }
-            context.SaveChanges();
-            return RedirectToAction("CustomerIndex");
-        }
+
 
         // GET: Customers/Delete/5
         public ActionResult Delete(int id)

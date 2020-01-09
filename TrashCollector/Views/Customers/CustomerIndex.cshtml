@@ -4,7 +4,7 @@
     ViewBag.Title = "CustomerIndex";
 }
 
-<h2>CustomerIndex</h2>
+<h2>List of Trash Pickup Orders For Today</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -53,54 +53,66 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.FirstName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.LastName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.StreetAddress)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.City)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.State)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.ZipCode)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Balance)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.PickupDay)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.PickupConfirmation)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.SuspendStart)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.SuspendEnd)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.ExtraPickupDate)
-    </td>
-    <td>
-        @Html.ActionLink("Edit Pickup", "CreatePickup", new { id = item.Id }) |
-        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-    </td>
-</tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StreetAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZipCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickupDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickupConfirmation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuspendStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuspendEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExtraPickupDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit Pickup", "CreatePickup", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+            </td>
+        </tr>
+    }
 
-</table>
-        @Html.ActionLink("Filter By Day", "GetCustomerByDay")
+</table
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.DropDownListFor(m=>m.Day,(SelectListItem)ViewBag.Day, "Choose New Day")
+    </div>
+    <button type="submit" class="btn btn-success submit">Pick New Down</button>
+}
+>
+@ViewBag.DayOfWeek
+
+@Html.ActionLink("Filter By Day", "GetCustomerByDay") |
+@Html.ActionLink("Back To List", "CustomerIndex") |

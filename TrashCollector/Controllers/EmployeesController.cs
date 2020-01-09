@@ -18,12 +18,41 @@ namespace TrashCollector.Controllers
 
         // GET: Employees
         public ActionResult Index()
-        {   
-
-            var employees = context.Employees.ToList();
-            return View(employees);
+        {
+            string userId = User.Identity.GetUserId();
+            Employee employee = context.Employees.Where(e => e.ApplicationId == userId).Single();
+            EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();
+            employeeView.Customers = context.Customers.Where(c => c.ZipCode == employee.ZipCode).ToList();
+            employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
+            return View(employeeView);
         }
 
+        [HttpPost]
+        public ActionResult GetPickupByDay(EmployeeHomeViewModel employView)
+        {
+            string userId = User.Identity.GetUserId();
+            Employee employee = context.Employees.Where(e => e.ApplicationId == userId).Single();
+            EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();
+            employeeView.Customers = context.Customers.Where(c => c.ZipCode == employee.ZipCode).ToList();
+            employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
+            return View(employeeView)
+        }
+        public ActionResult ChargeBalance()
+        {
+            var people = context.Customers.Select(c => c).ToList();
+            string dateTime = DateTime.Today.DayOfWeek.ToString();
+            int time = DateTime.Now.Hour;
+            foreach (var item in people)
+            {
+                if (item.PickupConfirmation == true && item.PickupDay == dateTime && time >= 0)
+                {
+                    item.Balance += 35;
+                    item.PickupConfirmation = false;
+                }
+            }
+            context.SaveChanges();
+            return RedirectToAction("CustomerIndex");
+        }
         // GET: Employees/Details/5
         public ActionResult Details(int id)
         {
