@@ -20,33 +20,49 @@ namespace TrashCollector.Controllers
 
         public ActionResult Index(int id)
         {
-            var customers = context.Customers.Include(c=>c.ApplicationUser).Where(c=>c.Id==id).ToList();
+            var customers = context.Customers.Include(c => c.ApplicationUser).Where(c => c.Id == id).ToList();
             return View(customers);
         }
         // GET: Customers
 
         public ActionResult CustomerIndex()
         {
+
+            var id = User.Identity.GetUserId();
+            var currentEmployee = context.Employees.Where(e => e.ApplicationId == id).SingleOrDefault();
+            var customers = context.Customers.Include(c => c.ApplicationUser).Where(c => c.ZipCode == currentEmployee.ZipCode).ToList();
+
+            return View(customers);
+        }
+        public ActionResult GetCustomerByDay()
+        {
             DateTime today = DateTime.Now;
             string currentDay = today.DayOfWeek.ToString();
             var id = User.Identity.GetUserId();
             var currentEmployee = context.Employees.Where(e => e.ApplicationId == id).SingleOrDefault();
-            var customers = context.Customers.Include(c=>c.ApplicationUser).Where(c=>c.ZipCode == currentEmployee.ZipCode && c.PickupDay == currentDay).ToList();
-            
-            return View(customers);
+            var customer = context.Customers.Include(c => c.ApplicationUser).Where(c => c.PickupDay == currentDay && c.ZipCode == currentEmployee.ZipCode).ToList();
+            return View("CustomerIndex", customer);
         }
         // GET: Customers/Details/5
-        public ActionResult Details()
+        public ActionResult Details(int? ID)
         {
-            var id = User.Identity.GetUserId();
-            var customer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.ApplicationId == id).SingleOrDefault();
-            return View(customer);
+            if (User.IsInRole("Employee")!=true)
+            {
+                var id = User.Identity.GetUserId();
+                var customer = context.Customers.Include(c => c.ApplicationUser).Where(c => c.ApplicationId == id).SingleOrDefault();
+                return View(customer);
+            }
+            else
+            {
+                var person = context.Customers.Include(c => c.ApplicationUser).Where(c => c.Id == ID).SingleOrDefault();
+                return View(person);
+            }
         }
 
         // GET: Customers/Create
         public ActionResult Create()
         {
-            Customer customer = new Customer();            
+            Customer customer = new Customer();
             return View(customer);
         }
 
@@ -60,7 +76,7 @@ namespace TrashCollector.Controllers
                 customer.ApplicationId = User.Identity.GetUserId();
                 context.Customers.Add(customer);
                 context.SaveChanges();
-                return RedirectToAction("Details");
+                return RedirectToAction("Details",customer);
             }
             catch
             {
@@ -71,7 +87,7 @@ namespace TrashCollector.Controllers
         // GET: Customers/Edit/5
         public ActionResult Edit(int id)
         {
-            var customer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
+            var customer = context.Customers.Include(c => c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
             return View();
         }
 
@@ -82,7 +98,7 @@ namespace TrashCollector.Controllers
             try
             {
                 // TODO: Add update logic here
-                var updateCustomer = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
+                var updateCustomer = context.Customers.Include(c => c.ApplicationUser).Where(c => c.Id == id).SingleOrDefault();
                 updateCustomer.FirstName = customer.FirstName;
                 updateCustomer.LastName = customer.LastName;
                 updateCustomer.ApplicationUser.UserName = customer.ApplicationUser.UserName;
@@ -112,23 +128,43 @@ namespace TrashCollector.Controllers
         {
             try
             {
-                // TODO: Add update logic here
                 var updateCustomer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
-                updateCustomer.PickupConfirmation = customer.PickupConfirmation;
-                updateCustomer.PickupDay = customer.PickupDay;
-                updateCustomer.ExtraPickupDate = customer.ExtraPickupDate;
-                updateCustomer.Balance = customer.Balance;
-                updateCustomer.SuspendStart = customer.SuspendStart;
-                updateCustomer.SuspendEnd = customer.SuspendEnd;            
+                if (User.IsInRole("Employee"))
+                {
+                    updateCustomer.PickupConfirmation = customer.PickupConfirmation;
+                }
+                else
+                {
+                    updateCustomer.PickupDay = customer.PickupDay;
+                    updateCustomer.ExtraPickupDate = customer.ExtraPickupDate;
+                    updateCustomer.SuspendStart = customer.SuspendStart;
+                    updateCustomer.SuspendEnd = customer.SuspendEnd;
+                }
+
                 context.SaveChanges();
-                return RedirectToAction("Details");
+                return RedirectToAction("Details", updateCustomer);
             }
             catch
             {
                 return View();
             }
         }
-        
+        public ActionResult ChargeBalance()
+        {
+            var people = context.Customers.Select(c => c).ToList();
+            string dateTime = DateTime.Today.DayOfWeek.ToString();
+            int time = DateTime.Now.Hour;
+            foreach (var item in people)
+            {                
+                if (item.PickupConfirmation == true && item.PickupDay == dateTime && time >= 0)
+                {
+                    item.Balance += 35;
+                    item.PickupConfirmation = false;
+                }
+            }
+            context.SaveChanges();
+            return RedirectToAction("CustomerIndex");
+        }
 
         // GET: Customers/Delete/5
         public ActionResult Delete(int id)
@@ -144,12 +180,13 @@ namespace TrashCollector.Controllers
             try
             {
                 // TODO: Add delete logic here
-                customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
-                var removeUser = context.Users.Where(r => r.Id == customer.ApplicationId).SingleOrDefault();
+                var deleteCustomer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+                var removeUser = context.Users.Where(r => r.Id == deleteCustomer.ApplicationId).SingleOrDefault();
                 context.Users.Remove(removeUser);
-                context.Customers.Remove(customer);
+                context.Customers.Remove(deleteCustomer);
+
                 context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("CustomerIndex");
             }
             catch
             {

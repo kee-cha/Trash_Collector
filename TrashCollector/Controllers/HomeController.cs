@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
@@ -10,7 +11,15 @@ namespace TrashCollector.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Employee") == true)
+            {
+                return RedirectToAction("ChargeBalance", "Customers");
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         public ActionResult About()

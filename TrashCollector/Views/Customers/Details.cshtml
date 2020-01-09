@@ -113,7 +113,7 @@
 </div>
 <p>
 
-    @Html.ActionLink("Create/Edit Pickup", "CreatePickup", new { id = Model.Id }) 
+    @Html.ActionLink("Make Changes", "CreatePickup", new { id = Model.Id }) 
     @if (User.IsInRole("Employee") == true)
     {
         @Html.ActionLink("Back to List", "CustomerIndex")
