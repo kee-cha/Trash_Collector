@@ -15,14 +15,20 @@ namespace TrashCollector.Controllers
         {
             context = new ApplicationDbContext();
         }
+        public ActionResult Index()
+        {
+            var employee = context.Employees.ToList();
+            return View(employee);
+        }
 
         // GET: Employees
-        public ActionResult Index()
+        public ActionResult GetPickupByDay()
         {
             string userId = User.Identity.GetUserId();
             Employee employee = context.Employees.Where(e => e.ApplicationId == userId).Single();
             EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();
-            employeeView.Customers = context.Customers.Where(c => c.ZipCode == employee.ZipCode).ToList();
+            string today = DateTime.Now.DayOfWeek.ToString();
+            employeeView.Customers = context.Customers.Where(c=>c.ZipCode==employee.ZipCode && c.PickupDay==today).ToList();
             employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
             return View(employeeView);
         }
@@ -32,10 +38,10 @@ namespace TrashCollector.Controllers
         {
             string userId = User.Identity.GetUserId();
             Employee employee = context.Employees.Where(e => e.ApplicationId == userId).Single();
-            EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();
-            employeeView.Customers = context.Customers.Where(c => c.ZipCode == employee.ZipCode).ToList();
+            EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();            
+            employeeView.Customers = context.Customers.Where(c => c.ZipCode == employee.ZipCode && c.PickupDay==employView.SelectDay).ToList();
             employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
-            return View(employeeView)
+            return View(employeeView);
         }
         public ActionResult ChargeBalance()
         {
@@ -51,7 +57,7 @@ namespace TrashCollector.Controllers
                 }
             }
             context.SaveChanges();
-            return RedirectToAction("CustomerIndex");
+            return RedirectToAction("Index");
         }
         // GET: Employees/Details/5
         public ActionResult Details(int id)

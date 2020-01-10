@@ -4,11 +4,8 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Employees</h2>
+<h2>Pickup Order</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -24,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Customers[0].ZipCode)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Customers[0].)
+            @Html.DisplayNameFor(model => model.Customers[0].PickupDay)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Customers[0].Balance)
@@ -63,7 +60,7 @@
                 @Html.DisplayFor(modelItem => item.PickupDay)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Balance)
+                $ @Html.DisplayFor(modelItem => item.Balance).00
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PickupConfirmation)
@@ -78,7 +75,7 @@
                 @Html.DisplayFor(modelItem => item.ExtraPickupDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Confirm Pickup", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
@@ -91,8 +88,6 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Employee</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.SelectDay, "Select Day", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -109,5 +104,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "GetPickupByDay")
 </div>

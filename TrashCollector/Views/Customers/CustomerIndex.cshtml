@@ -103,16 +103,8 @@
         </tr>
     }
 
-</table
-@using (Html.BeginForm())
-{
-    <div class="form-group">
-        @Html.DropDownListFor(m=>m.Day,(SelectListItem)ViewBag.Day, "Choose New Day")
-    </div>
-    <button type="submit" class="btn btn-success submit">Pick New Down</button>
-}
->
-@ViewBag.DayOfWeek
+</table>
+
 
 @Html.ActionLink("Filter By Day", "GetCustomerByDay") |
 @Html.ActionLink("Back To List", "CustomerIndex") |

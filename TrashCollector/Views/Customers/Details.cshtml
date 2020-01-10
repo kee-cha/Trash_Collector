@@ -97,16 +97,24 @@
         <dt>
             @Html.DisplayNameFor(model => model.PickupConfirmation)
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PickupConfirmation)
-        </dd>
+        @if (User.IsInRole("Employee") == true)
+        {
+            <dd>
+                @Html.EditorFor(model => model.PickupConfirmation)
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Html.EditorFor(model => model.PickupConfirmation)
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.Balance)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Balance)
+            $ @Html.DisplayFor(model => model.Balance).00
         </dd>
 
     </dl>

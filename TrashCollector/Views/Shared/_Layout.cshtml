@@ -26,7 +26,7 @@
                         
                         @if (User.IsInRole("Employee")==true)
                         {
-                            @Html.ActionLink("Customers", "CustomerIndex", "Customers")
+                            @Html.ActionLink("Customers List", "GetPickupByDay", "Employees")
                         }
                         else if (User.IsInRole("Employee")!=true)
                         {
