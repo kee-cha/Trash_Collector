@@ -5,6 +5,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TrashCollector.Models;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Data;
+using System.Web.UI.WebControls;
 
 namespace TrashCollector.Controllers
 {
@@ -75,6 +80,7 @@ namespace TrashCollector.Controllers
 
         // POST: Employees/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Employee employee)
         {
             try
@@ -144,5 +150,6 @@ namespace TrashCollector.Controllers
                 return View();
             }
         }
+
     }
 }
