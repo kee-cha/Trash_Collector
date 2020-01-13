@@ -5,6 +5,34 @@
 }
 
 <h2>Pickup Order</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <div class="col-md-10" align="center">
+                        @Html.LabelFor(model => model.SelectDay, "Select Day", htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                </div>
+                <div class="col-md-2" align="right">
+                    @Html.DropDownListFor(model => model.SelectDay, Model.WeekDay)
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="submit" value="Filter By Day" class="btn btn-default" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
 
 <table class="table">
     <tr>
@@ -75,34 +103,15 @@
                 @Html.DisplayFor(modelItem => item.ExtraPickupDate)
             </td>
             <td>
-                @Html.ActionLink("Confirm Pickup", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Confirm Pickup", "ConfirmPickup", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", "Customers", new { id = item.Id }, "") |
+                @Html.ActionLink("Delete", "Delete", "Customers", new { id = item.Id }, "")
             </td>
         </tr>
     }
 
 </table>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.SelectDay, "Select Day", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model=>model.SelectDay, Model.WeekDay)         
-            </div>
-        </div>   
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Filter By Day" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
 
 <div>
-    @Html.ActionLink("Back to List", "GetPickupByDay")
+    @Html.ActionLink("Current Day Pickup Orders", "GetPickupByDay")
 </div>

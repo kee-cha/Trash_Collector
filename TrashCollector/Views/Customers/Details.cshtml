@@ -97,35 +97,33 @@
         <dt>
             @Html.DisplayNameFor(model => model.PickupConfirmation)
         </dt>
-        @if (User.IsInRole("Employee") == true)
-        {
-            <dd>
-                @Html.EditorFor(model => model.PickupConfirmation)
-            </dd>
-        }
-        else
-        {
-            <dd>
-                @Html.EditorFor(model => model.PickupConfirmation)
-            </dd>
-        }
+        <dd>
+            @Html.DisplayFor(model => model.PickupConfirmation)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Balance)
         </dt>
 
         <dd>
-            $ @Html.DisplayFor(model => model.Balance).00
+            $ @Html.DisplayFor(model => model.Balance)
         </dd>
 
     </dl>
 </div>
+<img src="@ViewBag.getMap" />
+<br />
+<br />
 <p>
+    <a href="~/Views/Customers/Details.cshtml">~/Views/Customers/Details.cshtml</a>
+    @if (User.IsInRole("Employees") != true)
+    {
+        @Html.ActionLink("Edit Personal Information", "Edit", new { id = Model.Id }) <text>|</text>
+        @Html.ActionLink("Edit Pickup Order Information", "CreatePickup", new { id = Model.Id })
+    }
 
-    @Html.ActionLink("Edit Personal Information", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Pickup Order Information", "CreatePickup", new { id = Model.Id })
     @if (User.IsInRole("Employee") == true)
     {
-        @Html.ActionLink("Back to List", "CustomerIndex")
+        @Html.ActionLink("Back to List", "GetPickupByDay", "Employees")
     }
 
 </p>

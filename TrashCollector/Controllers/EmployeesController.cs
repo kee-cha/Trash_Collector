@@ -9,7 +9,12 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Data;
+using System.Data.Entity;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace TrashCollector.Controllers
 {
@@ -25,45 +30,51 @@ namespace TrashCollector.Controllers
             var employee = context.Employees.ToList();
             return View(employee);
         }
-
-        // GET: Employees
-        public ActionResult GetPickupByDay()
+        public EmployeeHomeViewModel Filter(string day)
         {
             string userId = User.Identity.GetUserId();
             Employee employee = context.Employees.Where(e => e.ApplicationId == userId).Single();
             EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();
-            string today = DateTime.Now.DayOfWeek.ToString();
-            employeeView.Customers = context.Customers.Where(c=>c.ZipCode==employee.ZipCode && c.PickupDay==today).ToList();
+            string today = day;
+            employeeView.Customers = context.Customers.Include(c=>c.ApplicationUser).Where(c => c.ZipCode == employee.ZipCode && c.PickupDay == today).ToList();
             employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
+            return employeeView;
+        }
+        // GET: Employees
+        public ActionResult GetPickupByDay()
+        {  
+
+            string today = DateTime.Now.DayOfWeek.ToString();
+            var employeeView = Filter(today);
             return View(employeeView);
         }
 
         [HttpPost]
         public ActionResult GetPickupByDay(EmployeeHomeViewModel employView)
         {
-            string userId = User.Identity.GetUserId();
-            Employee employee = context.Employees.Where(e => e.ApplicationId == userId).Single();
-            EmployeeHomeViewModel employeeView = new EmployeeHomeViewModel();            
-            employeeView.Customers = context.Customers.Where(c => c.ZipCode == employee.ZipCode && c.PickupDay==employView.SelectDay).ToList();
-            employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
+            var employeeView = Filter(employView.SelectDay);            
             return View(employeeView);
         }
-        public ActionResult ChargeBalance()
+        public ActionResult ConfirmPickup(int? id)
         {
-            var people = context.Customers.Select(c => c).ToList();
-            string dateTime = DateTime.Today.DayOfWeek.ToString();
-            int time = DateTime.Now.Hour;
-            foreach (var item in people)
+
+            var customer = context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            if (customer.PickupConfirmation == false)
             {
-                if (item.PickupConfirmation == true && item.PickupDay == dateTime && time >= 0)
-                {
-                    item.Balance += 35;
-                    item.PickupConfirmation = false;
-                }
+               customer.PickupConfirmation = true;
+                customer.Balance += 32.25;
             }
             context.SaveChanges();
-            return RedirectToAction("Index");
+            var employeeView = Filter(customer.PickupDay);
+            return View("GetPickupByDay", employeeView);
         }
+        [HttpPost]
+        public ActionResult ConfirmPickup(EmployeeHomeViewModel employView)
+        {
+            var employeeView = Filter(employView.SelectDay);
+            return View("GetPickupByDay", employeeView);
+        }
+
         // GET: Employees/Details/5
         public ActionResult Details(int id)
         {
@@ -90,13 +101,14 @@ namespace TrashCollector.Controllers
                 employee.ApplicationId = User.Identity.GetUserId();
                 context.Employees.Add(employee);
                 context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("LogOut", "Account");
             }
             catch
             {
                 return View();
             }
         }
+
 
         // GET: Employees/Edit/5
         public ActionResult Edit(int id)

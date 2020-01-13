@@ -55,18 +55,6 @@
             </div>
         </div>
     }
-    @if (User.IsInRole("Employee") == true)
-    {
-        <div class="form-group">
-            @Html.LabelFor(model => model.PickupConfirmation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.PickupConfirmation)
-                    @Html.ValidationMessageFor(model => model.PickupConfirmation, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-    }
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />

@@ -401,17 +401,36 @@ namespace TrashCollector.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-
+        public ActionResult LogOut()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Login");
+        }
         //
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            ResetConfirmation();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
+        public void ResetConfirmation()
+        {
+            var people = context.Customers.Select(c => c).ToList();
+            string dateTime = DateTime.Today.DayOfWeek.ToString();
+            int time = DateTime.Now.Hour;
+            foreach (var item in people)
+            {
+                if (item.PickupConfirmation == true && item.PickupDay == dateTime && time >= 0)
+                {
+                    item.PickupConfirmation = false;
+                }
+            }
+            context.SaveChanges();
+        }
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]

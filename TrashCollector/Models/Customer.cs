@@ -12,18 +12,24 @@ namespace TrashCollector.Models
         [Key]
         public int Id { get; set; }
         [Display(Name = "First Name")]
+        [Required]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
+        [Required]
         public string LastName { get; set; }
         [Display(Name = "Pickup Day")]
         public string PickupDay { get; set; }
         [Display(Name = "Street Address")]
+        [Required]
         public string StreetAddress { get; set; }
         [Display(Name = "City")]
+        [Required]
         public string City { get; set; }
         [Display(Name = "State")]
+        [Required]
         public string  State { get; set; }
         [Display(Name = "Zip-code")]
+        [Required]
         public string ZipCode { get; set; }        
         [Display(Name = "Balance Due")]
         public double Balance { get; set; }
@@ -39,7 +45,5 @@ namespace TrashCollector.Models
         [ForeignKey("ApplicationUser")]
         public string ApplicationId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
-        public IEnumerable<ApplicationUser> ApplicationUsers { get; set; }
-
     }
 }

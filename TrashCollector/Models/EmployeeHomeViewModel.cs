@@ -11,5 +11,6 @@ namespace TrashCollector.Models
         public SelectList WeekDay { get; set; }
         public List<Customer> Customers { get; set; }
         public string SelectDay { get; set; }
+        public string isPickup { get; set; }
     }
 }
