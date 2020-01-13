@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TrashCollector.Controllers
 {
@@ -40,19 +41,53 @@ namespace TrashCollector.Controllers
             employeeView.WeekDay = new SelectList(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
             return employeeView;
         }
+        public string GetMap(List<Customer> customers)
+        {
+            if (customers.Count > 0)
+            {
+                List<string> addresses = new List<string>();
+                string marker = "";
+                foreach (var customer in customers)
+                {
+                    addresses.Add(customer.StreetAddress);
+                }
+                foreach (var address in addresses)
+                {
+                    var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key={1}&address={0}&sensor=false", Uri.EscapeDataString(address), GoogleMapKey.myKey);
+                    WebRequest request = WebRequest.Create(requestUri);
+                    WebResponse response = request.GetResponse();
+                    XDocument xDoc = XDocument.Load(response.GetResponseStream());
+                    XElement result = xDoc.Element("GeocodeResponse").Element("result");
+                    if (result != null)
+                    {
+                        XElement locationElement = result.Element("geometry").Element("location");
+                        XElement lat = locationElement.Element("lat");
+                        XElement lng = locationElement.Element("lng");
+                        var latCoord = lat.Value;
+                        var lngCoord = lng.Value;
+                        marker += "markers=color:red%7C" + latCoord + "," + lngCoord + "&";
+                    }
+                }
+                string map = string.Format("https://maps.googleapis.com/maps/api/staticmap?center={0}&zoom=13&size=600x300&maptype=roadmap&{2}key={1}", Uri.EscapeDataString(customers[0].ZipCode), GoogleMapKey.myKey, marker);
+                return map;
+            }
+            return "";
+        }
         // GET: Employees
         public ActionResult GetPickupByDay()
         {  
 
             string today = DateTime.Now.DayOfWeek.ToString();
             var employeeView = Filter(today);
+            ViewBag.getMap = GetMap(employeeView.Customers);
             return View(employeeView);
         }
 
         [HttpPost]
         public ActionResult GetPickupByDay(EmployeeHomeViewModel employView)
         {
-            var employeeView = Filter(employView.SelectDay);            
+            var employeeView = Filter(employView.SelectDay);
+            ViewBag.getMap = GetMap(employeeView.Customers);
             return View(employeeView);
         }
         public ActionResult ConfirmPickup(int? id)
@@ -66,12 +101,14 @@ namespace TrashCollector.Controllers
             }
             context.SaveChanges();
             var employeeView = Filter(customer.PickupDay);
+            ViewBag.getMap = GetMap(employeeView.Customers);
             return View("GetPickupByDay", employeeView);
         }
         [HttpPost]
         public ActionResult ConfirmPickup(EmployeeHomeViewModel employView)
         {
             var employeeView = Filter(employView.SelectDay);
+            ViewBag.getMap = GetMap(employeeView.Customers);
             return View("GetPickupByDay", employeeView);
         }
 

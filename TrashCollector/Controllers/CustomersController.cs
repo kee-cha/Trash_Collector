@@ -39,15 +39,13 @@ namespace TrashCollector.Controllers
             }
             else
             {
-                
-                
                 var person = context.Customers.Include(c => c.ApplicationUser).Where(c => c.Id == ID).SingleOrDefault();
                 var location = person.StreetAddress + "," + person.City + "," + person.State;
                 var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key={1}&address={0}&sensor=false", Uri.EscapeDataString(location), GoogleMapKey.myKey);
                 WebRequest request = WebRequest.Create(requestUri);
                 WebResponse response = request.GetResponse();
                 XDocument xDoc = XDocument.Load(response.GetResponseStream());
-                XElement result=xDoc.Element("GeocodeResponse").Element("result");
+                XElement result = xDoc.Element("GeocodeResponse").Element("result");
                 if (result != null)
                 {
                     XElement locationElement = result.Element("geometry").Element("location");
@@ -61,6 +59,7 @@ namespace TrashCollector.Controllers
                 return View(person);
             }
         }
+
 
         // GET: Customers/Create
         public ActionResult Create()
