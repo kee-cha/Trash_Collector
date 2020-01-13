@@ -22,8 +22,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>
-                        
+                    <li>                        
                         @if (User.IsInRole("Employee")==true)
                         {
                             @Html.ActionLink("Customers List", "GetPickupByDay", "Employees")
