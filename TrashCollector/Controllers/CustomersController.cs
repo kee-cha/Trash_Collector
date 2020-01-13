@@ -78,7 +78,7 @@ namespace TrashCollector.Controllers
                 customer.ApplicationId = User.Identity.GetUserId();
                 context.Customers.Add(customer);
                 context.SaveChanges();
-                return RedirectToAction("Details", customer);
+                return RedirectToAction("LogOut", "Account");
             }
             catch
             {
